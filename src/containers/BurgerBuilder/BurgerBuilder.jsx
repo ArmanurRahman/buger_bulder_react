@@ -68,9 +68,12 @@ class BurgerBuilder extends Component{
         this.setState({puschasing : true});
     }
 
-    cancelBackDropHandler = () => {
-        
+    cancelParchaseHandler = () => {        
         this.setState({puschasing : false});
+    }
+
+    continueParchaseHandler = () => {
+        alert('continue parchase');
     }
 
     render(){
@@ -81,10 +84,14 @@ class BurgerBuilder extends Component{
         }
         return(
             <Aux>
+                <Modal show={this.state.puschasing} modalRemove={this.cancelParchaseHandler}>
+                    <PurchaseSummary ingrediants={this.state.ingrediant}
+                    cancelParchase={this.cancelParchaseHandler}
+                    continueParchase={this.continueParchaseHandler}
+                    price={this.state.totalPrice}
+                    />
+                </Modal>                
                 <Burger ingrediants={this.state.ingrediant}/>
-                <Modal show={this.state.puschasing} modalRemove={this.cancelBackDropHandler}>
-                    <PurchaseSummary ingrediants={this.state.ingrediant}/>
-                </Modal>
                 
                 <BuildControls 
                     ingrediantAdd={this.addIngrediantHandler}
