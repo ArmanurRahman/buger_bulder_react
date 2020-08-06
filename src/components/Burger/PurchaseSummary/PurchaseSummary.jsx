@@ -5,7 +5,7 @@ const purchaseSummary = (props) => {
 
     const ingrediantSummary = Object.keys(props.ingrediants)
     .map(igkey =>{
-        return <li> {igkey} : {props.ingrediants[igkey]}</li>;
+        return <li key={igkey}> {igkey} : {props.ingrediants[igkey]}</li>;
     }); 
 
     return (

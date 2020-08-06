@@ -68,6 +68,11 @@ class BurgerBuilder extends Component{
         this.setState({puschasing : true});
     }
 
+    cancelBackDropHandler = () => {
+        
+        this.setState({puschasing : false});
+    }
+
     render(){
 
         const desabledInfo = {...this.state.ingrediant};
@@ -77,7 +82,7 @@ class BurgerBuilder extends Component{
         return(
             <Aux>
                 <Burger ingrediants={this.state.ingrediant}/>
-                <Modal show={this.state.puschasing}>
+                <Modal show={this.state.puschasing} modalRemove={this.cancelBackDropHandler}>
                     <PurchaseSummary ingrediants={this.state.ingrediant}/>
                 </Modal>
                 
