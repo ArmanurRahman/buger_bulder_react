@@ -36,7 +36,7 @@ class BurgerIngredians extends Component{
             default:
                 ingrediant = null;
         }        
-        console.log(Classes.Bacon);
+        
         return ingrediant;
 
     }
