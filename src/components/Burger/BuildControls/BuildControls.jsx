@@ -21,7 +21,7 @@ const buildControl = (props) => (
                 disabled = {props.disable[ctrl.label]}
             />
         ))}
-        
+        <button className={Classes.OrderButton} disabled={!props.purchaseStatus}>CHECK OUT</button>
     </div>
 )
 
