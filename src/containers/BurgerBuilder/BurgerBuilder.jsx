@@ -5,6 +5,7 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import PurchaseSummary from '../../components/Burger/PurchaseSummary/PurchaseSummary'
 import Modal from '../../components/UI/Modal/Modal'
 import axiosInstance from '../../axios-order';
+import Spinner from '../../components/UI/Spinner/Spinner'
 
 const INGREDIANT_PRICE = {
     'Meat' : 0.5,
@@ -24,7 +25,8 @@ class BurgerBuilder extends Component{
         },
         totalPrice : 4,
         purchaseStatus : false,
-        puschasing : false
+        puschasing : false,
+        loading : false
     }    
 
     addIngrediantHandler = (type) => {
@@ -74,6 +76,7 @@ class BurgerBuilder extends Component{
     }
 
     continueParchaseHandler = () => {
+        this.setState({loading:true})
         const order = {
             ingrediants: this.state.ingrediant,
             totalPrice : this.state.totalPrice,
@@ -91,6 +94,7 @@ class BurgerBuilder extends Component{
         }
         axiosInstance.post('/order.json', order)
         .then((response) => {
+            this.setState({loading:false, puschasing: false})
             console.log(response);
         }
             
@@ -106,14 +110,23 @@ class BurgerBuilder extends Component{
         for(let key in desabledInfo){
             desabledInfo[key] = desabledInfo[key] <= 0;
         }
+
+        let orderSummery = <PurchaseSummary ingrediants={this.state.ingrediant}
+                cancelParchase={this.cancelParchaseHandler}
+                continueParchase={this.continueParchaseHandler}
+                price={this.state.totalPrice}
+                />
+
+        if(this.state.loading){
+            orderSummery = <Spinner />
+        }                
         return(
             <Aux>
-                <Modal show={this.state.puschasing} modalRemove={this.cancelParchaseHandler}>
-                    <PurchaseSummary ingrediants={this.state.ingrediant}
-                    cancelParchase={this.cancelParchaseHandler}
-                    continueParchase={this.continueParchaseHandler}
-                    price={this.state.totalPrice}
-                    />
+                <Modal show={this.state.puschasing} 
+                    modalRemove={this.cancelParchaseHandler}
+                    showSpinner={this.state.loading}
+                    >
+                    {orderSummery}
                 </Modal>                
                 <Burger ingrediants={this.state.ingrediant}/>
                 
