@@ -3,6 +3,7 @@ import Button from '../../../components/UI/Button/Button'
 import Classes from './ContactData.module.css'
 import axiosInstance from '../../../axios-order';
 import Spinner from '../../../components/UI/Spinner/Spinner'
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
 
 class ContractData extends Component{
     state = {
@@ -66,4 +67,4 @@ class ContractData extends Component{
     }
 }
 
-export default ContractData;
+export default withErrorHandler(ContractData, axiosInstance);
