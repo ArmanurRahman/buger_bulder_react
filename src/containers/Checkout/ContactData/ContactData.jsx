@@ -5,6 +5,7 @@ import axiosInstance from '../../../axios-order';
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
 import Input from '../../../components/UI/Input/Input'
+import { connect } from "react-redux";
 
 class ContractData extends Component{
     state = {
@@ -153,7 +154,7 @@ class ContractData extends Component{
             fornIsValid = updatedOrderForm[inputIdentifier].valid && fornIsValid
         }
         this.setState({orderForm: updatedOrderForm, formValid:fornIsValid})
-        console.log(this.state)
+
     }
     render(){
 
@@ -191,4 +192,10 @@ class ContractData extends Component{
     }
 }
 
-export default withErrorHandler(ContractData, axiosInstance);
+const mapStateToProps = state => {
+    return{
+        ingrediants: state.ingrediant,
+        price: state.totalPrice
+    }
+}
+export default connect(mapStateToProps) (withErrorHandler(ContractData, axiosInstance));
