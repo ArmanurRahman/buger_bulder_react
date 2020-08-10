@@ -10,8 +10,8 @@ class Orders extends Component{
         loading: false
     }
     componentDidMount(){
-        axios.get('order.json').
-        then(res => {
+        axios.get('order.json')
+        .then(res => {
             let fetchOrders = [];
             this.setState({loading: false})
             for(let key in res.data){
@@ -21,8 +21,8 @@ class Orders extends Component{
             }
             this.setState({loading: true, orders: fetchOrders})
             console.log(this.state.orders)
-        }).
-        catch(error => {
+        })
+        .catch(error => {
             this.setState({loading: false})
         })
     }
