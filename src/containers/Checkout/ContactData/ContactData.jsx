@@ -6,6 +6,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner'
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
 import Input from '../../../components/UI/Input/Input'
 import { connect } from "react-redux";
+import * as action from '../../../Store/action/index'
 
 class ContractData extends Component{
     state = {
@@ -85,19 +86,17 @@ class ContractData extends Component{
                     ]
                 },
                 validationRules: {},
-                value: '',
+                value: 'fastest',
                 touch: false,
                 valid: true
             },      
                            
         },
         formValid: false,
-        loading: false
     }
 
     orderHandler = (event) => {
         event.preventDefault();
-        this.setState({loading:true})
         let formData =  {}        
         for(let formdataElement in this.state.orderForm){
             formData[formdataElement] = this.state.orderForm[formdataElement].value
@@ -108,16 +107,7 @@ class ContractData extends Component{
             totalPrice : this.props.price,
             contactData: formData
         }
-        axiosInstance.post('/order.json', order)
-        .then((response) => {
-            this.setState({loading:false})
-            //console.log(response);
-            this.props.history.push('/');
-        }
-            
-        ).catch(error => {
-            console.log(error)
-        })
+        this.props.onOrderBarger(order)
     }
 
     checkValidity(value, rules){
@@ -180,7 +170,7 @@ class ContractData extends Component{
         <Button  btnType='Success' disable={!this.state.formValid}>ORDER</Button>    
         </form>
 
-        if(this.state.loading){
+        if(this.props.loading){
             form = <Spinner />
         }
         return(
@@ -194,8 +184,15 @@ class ContractData extends Component{
 
 const mapStateToProps = state => {
     return{
-        ingrediants: state.ingrediant,
-        price: state.totalPrice
+        ingrediants: state.burgerBuilder.ingrediant,
+        price: state.burgerBuilder.totalPrice,
+        loading: state.order.loading
     }
 }
-export default connect(mapStateToProps) (withErrorHandler(ContractData, axiosInstance));
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onOrderBarger: (orderData) => dispatch(action.purchaseBurger(orderData))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps) (withErrorHandler(ContractData, axiosInstance));

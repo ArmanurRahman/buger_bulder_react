@@ -71,6 +71,7 @@ class BurgerBuilder extends Component{
     }
 
     continueParchaseHandler = () => {
+        this.props.onInitPurchase()
         this.props.history.push('checkout');
 /*
         const queryParam = [];
@@ -137,9 +138,9 @@ class BurgerBuilder extends Component{
 
 const mapStateToProps =(state) => {
     return {
-        ings: state.ingrediant,
-        totalPrice: state.totalPrice,
-        error: state.error
+        ings: state.burgerBuilder.ingrediant,
+        totalPrice: state.burgerBuilder.totalPrice,
+        error: state.burgerBuilder.error
     }
 }
 
@@ -147,7 +148,8 @@ const mapDispatchToProps = dispatch => {
     return{
         onIngrediantAdded: (ingName) => dispatch(burgerBuilderActions.addIngrediant(ingName)),
         onIngrediantRemoved: (ingName) => dispatch(burgerBuilderActions.removeIngrediant(ingName)),
-        onInitIngrediant: (ingName) => dispatch(burgerBuilderActions.initIngridaints())
+        onInitIngrediant: () => dispatch(burgerBuilderActions.initIngridaints()),
+        onInitPurchase: () => dispatch(burgerBuilderActions.purchaseInit())
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps) (withErrorHandler(BurgerBuilder, axiosInstance));
