@@ -25,7 +25,7 @@ const buildControl = (props) => (
         className={Classes.OrderButton} 
         disabled={!props.purchaseStatus}
         onClick={props.ordered}
-        >CHECK OUT</button>
+        >{ !props.isAuthinticated ? 'SIGN IN TO CHECK OUT' : 'CHECK OUT' }</button>
     </div>
 )
 

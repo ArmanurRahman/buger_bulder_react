@@ -19,7 +19,7 @@ const sidewrader = (props) =>{
                     <Logo/>
                 </div>
                 <nav>
-                    <NavigationItems/>
+                    <NavigationItems isAuthindicate={props.isAuth} />
                 </nav>
             </div>
         </Aux>

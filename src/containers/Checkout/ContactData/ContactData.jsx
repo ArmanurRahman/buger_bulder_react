@@ -106,8 +106,8 @@ class ContractData extends Component{
             ingrediants: this.props.ingrediants,
             totalPrice : this.props.price,
             contactData: formData
-        }
-        this.props.onOrderBarger(order)
+        }        
+        this.props.onOrderBarger(order, this.props.token)
     }
 
     checkValidity(value, rules){
@@ -186,13 +186,14 @@ const mapStateToProps = state => {
     return{
         ingrediants: state.burgerBuilder.ingrediant,
         price: state.burgerBuilder.totalPrice,
-        loading: state.order.loading
+        loading: state.order.loading,
+        token: state.auth.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onOrderBarger: (orderData) => dispatch(action.purchaseBurger(orderData))
+        onOrderBarger: (orderData, token) => dispatch(action.purchaseBurger(orderData, token))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps) (withErrorHandler(ContractData, axiosInstance));
