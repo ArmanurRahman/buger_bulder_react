@@ -105,7 +105,8 @@ class ContractData extends Component{
         const order = {
             ingrediants: this.props.ingrediants,
             totalPrice : this.props.price,
-            contactData: formData
+            contactData: formData,
+            userId: this.props.userId
         }        
         this.props.onOrderBarger(order, this.props.token)
     }
@@ -187,7 +188,8 @@ const mapStateToProps = state => {
         ingrediants: state.burgerBuilder.ingrediant,
         price: state.burgerBuilder.totalPrice,
         loading: state.order.loading,
-        token: state.auth.token
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 
