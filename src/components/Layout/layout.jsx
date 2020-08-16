@@ -22,7 +22,7 @@ class Layout extends Component{
         });
     }
     render(){
-        console.log(this.props.isAuthinticate)
+        
         return (
             <Aux>
             <Toolbar toggleButtonClicked={this.toggleButtonHandler}
