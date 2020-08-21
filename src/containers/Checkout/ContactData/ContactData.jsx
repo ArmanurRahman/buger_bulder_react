@@ -1,4 +1,4 @@
-import React,{  Component } from "react";
+import React,{  useState } from "react";
 import Button from '../../../components/UI/Button/Button'
 import Classes from './ContactData.module.css'
 import axiosInstance from '../../../axios-order';
@@ -8,9 +8,9 @@ import Input from '../../../components/UI/Input/Input'
 import { connect } from "react-redux";
 import * as action from '../../../Store/action/index'
 
-class ContractData extends Component{
-    state = {
-        orderForm: {
+const ContractData = props =>{
+    const [orderForm, setOrderForm] = useState(
+        {
             name: {
                 elemantType: 'input',
                 elementConfig: {
@@ -91,27 +91,28 @@ class ContractData extends Component{
                 valid: true
             },      
                            
-        },
-        formValid: false,
-    }
+        }
+    )
+    const [formValid, setFormValid] = useState(false)
+        
 
-    orderHandler = (event) => {
+    const orderHandler = (event) => {
         event.preventDefault();
         let formData =  {}        
-        for(let formdataElement in this.state.orderForm){
-            formData[formdataElement] = this.state.orderForm[formdataElement].value
+        for(let formdataElement in orderForm){
+            formData[formdataElement] = orderForm[formdataElement].value
         }
 
         const order = {
-            ingrediants: this.props.ingrediants,
-            totalPrice : this.props.price,
+            ingrediants: props.ingrediants,
+            totalPrice : props.price,
             contactData: formData,
-            userId: this.props.userId
+            userId: props.userId
         }        
-        this.props.onOrderBarger(order, this.props.token)
+        props.onOrderBarger(order, props.token)
     }
 
-    checkValidity(value, rules){
+    const checkValidity = (value, rules) => {
         
         let isValid = true;
         if(rules.isRequired){
@@ -127,16 +128,16 @@ class ContractData extends Component{
         
     }
 
-    inputChangedHandler = (event, inputIdentifier) => {
+    const inputChangedHandler = (event, inputIdentifier) => {
         
         const updatedOrderForm = {
-            ...this.state.orderForm
+            ...orderForm
         }
         const updatedFormElement = {
             ...updatedOrderForm[inputIdentifier]
         }
         updatedFormElement.value = event.target.value
-        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validationRules)
+        updatedFormElement.valid = checkValidity(updatedFormElement.value, updatedFormElement.validationRules)
         updatedFormElement.touch = true
         updatedOrderForm[inputIdentifier] = updatedFormElement
 
@@ -144,19 +145,18 @@ class ContractData extends Component{
         for(let inputIdentifier in updatedOrderForm){
             fornIsValid = updatedOrderForm[inputIdentifier].valid && fornIsValid
         }
-        this.setState({orderForm: updatedOrderForm, formValid:fornIsValid})
-
+        setOrderForm(updatedOrderForm)
+        setFormValid(fornIsValid)        
     }
-    render(){
 
         const formatElementArray = []
-        for(let key in this.state.orderForm){
+        for(let key in orderForm){
             formatElementArray.push({
                 id: key,
-                config: this.state.orderForm[key]
+                config: orderForm[key]
             })
         }
-        let form = <form onSubmit={this.orderHandler}>
+        let form = <form onSubmit={orderHandler}>
             {formatElementArray.map(formElement => (
                 <Input
                 key={formElement.id}
@@ -165,13 +165,13 @@ class ContractData extends Component{
                 value={formElement.config.value}
                 valid={!formElement.config.valid}
                 touch={formElement.config.touch}
-                changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
+                changed={(event) => inputChangedHandler(event, formElement.id)}/>
             ))}
 
-        <Button  btnType='Success' disable={!this.state.formValid}>ORDER</Button>    
+        <Button  btnType='Success' disable={!formValid}>ORDER</Button>    
         </form>
 
-        if(this.props.loading){
+        if(props.loading){
             form = <Spinner />
         }
         return(
@@ -180,7 +180,6 @@ class ContractData extends Component{
                 {form}
             </div>
         )
-    }
 }
 
 const mapStateToProps = state => {

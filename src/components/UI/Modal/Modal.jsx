@@ -4,25 +4,22 @@ import Aux from '../../../hoc/Auxalary'
 import BackDrop from '../BackDrop/BackDrop'
 
 
-class Modal extends Component{
+const Modal = props => {
 
-    shouldComponentUpdate( nextProp, nextState){
-        return nextProp.show !== this.props.show || nextProp.children !== this.props.children
-    }
-    render(){
+    
         return(    
             <Aux>
-                <BackDrop show={this.props.show} clicked={this.props.modalRemove}/>
+                <BackDrop show={props.show} clicked={props.modalRemove}/>
                 <div className={Classes.Modal}                
                 style={{
-                    transform: this.props.show ? 'translateY(0)' : 'translateY(-100vh)',
-                    opacity: this.props.show ? '1' : '0'
+                    transform: props.show ? 'translateY(0)' : 'translateY(-100vh)',
+                    opacity: props.show ? '1' : '0'
                 }}>
-                    {this.props.children}
+                    {props.children}
                 </div>   
             </Aux>     
         );
-    }
+    
 
 }
-export default Modal;
+export default React.memo(Modal, (prevProps, nextProps) => nextProps.show === prevProps.show && nextProps.children === prevProps.children) ;
